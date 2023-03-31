@@ -1,6 +1,7 @@
 // Import required dependencies
 const express = require("express")
 const helmet = require("helmet")
+const postRoutes = require("./routes/postRoutes")
 
 // Create an Express application
 const app = express()
@@ -9,11 +10,12 @@ const app = express()
 app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use("/posts", postRoutes)
 
 app.get("/", (req, res) => {
   let uptimeObj = { uptime: process.uptime() }
   let uptimeStr = JSON.stringify(uptimeObj)
-  res.send(uptimeStr)
+  res.status(200).send(uptimeStr)
 })
 
 module.exports = app
