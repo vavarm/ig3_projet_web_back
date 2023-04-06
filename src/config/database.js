@@ -1,6 +1,14 @@
 const { Sequelize } = require("sequelize")
+const dotenv = require("dotenv")
 
-const username = process.env.DB_USERNAME || "varm"
+if (process.env.NODE_ENV !== "production") {
+  const result = dotenv.config({ path: "src/.env" })
+  if (result.error) {
+    throw result.error
+  }
+}
+
+const username = process.env.DB_USERNAME || "postgres"
 const password = process.env.DB_PASSWORD || ""
 const host = process.env.DB_HOSTNAME || "localhost"
 const database = process.env.DB_NAME || "projetweb"
@@ -12,7 +20,5 @@ const sequelize = new Sequelize(database, username, password, {
   dialect: "postgres",
   logging: false,
 })
-
-console.log("Database connection established")
 
 module.exports = sequelize
