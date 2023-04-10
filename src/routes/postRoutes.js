@@ -1,45 +1,31 @@
 const express = require("express")
 const router = express.Router()
+const {
+  getPosts,
+  getPost,
+  createPost,
+  updatePost,
+  deletePost,
+} = require("../controllers/postControllers")
 
-router.get("/", (req, res) => {
-  return res.status(200).send("post1, post2, post3")
+router.get("/", async (req, res) => {
+  await getPosts(req, res)
 })
 
-router.get("/:id", (req, res) => {
-  const { id } = req.params
-  if (!id || isNaN(id)) {
-    return res.status(400).send("Please provide a valid id")
-  }
-  return res.status(200).send(`Post with id: ${id}`)
+router.get("/:id", async (req, res) => {
+  await getPost(req, res)
 })
 
-router.post("/", (req, res) => {
-  const { title, content } = req.body
-  if (!title || !content) {
-    return res.status(400).send("Please provide both title and content")
-  }
-  return res
-    .status(201)
-    .send(`Post created with title: ${title} and content: ${content}`)
+router.post("/", async (req, res) => {
+  await createPost(req, res)
 })
 
-router.put("/content/:id", (req, res) => {
-  const { id } = req.params
-  const { content } = req.body
-  if (!id || isNaN(id) || !content) {
-    return res.status(400).send("Please provide a valid id and content")
-  }
-  return res
-    .status(200)
-    .send(`Post updated with id: ${id} with content: ${content}`)
+router.put("/:id", async (req, res) => {
+  await updatePost(req, res)
 })
 
-router.delete("/:id", (req, res) => {
-  const { id } = req.params
-  if (!id || isNaN(id)) {
-    return res.status(400).send("Please provide a valid id")
-  }
-  return res.status(200).send(`Post deleted with id: ${id}`)
+router.delete("/:id", async (req, res) => {
+  await deletePost(req, res)
 })
 
 module.exports = router
