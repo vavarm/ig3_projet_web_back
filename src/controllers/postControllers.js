@@ -66,7 +66,7 @@ const deletePost = async (req, res) => {
       where: { id: id },
     })
     if (deleted) {
-      return res.status(204).json({ message: "Post deleted" })
+      return res.status(200).json({ message: "Post deleted" })
     }
     return res.status(404).json({ error: "Post not found" })
   } catch (err) {
