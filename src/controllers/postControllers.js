@@ -29,7 +29,11 @@ const getPost = async (req, res) => {
 // POST /posts
 
 const createPost = async (req, res) => {
-  const data = req.body.data
+  const data = {
+    title: req.body.title,
+    content: req.body.content,
+    author_id: req.auth.userId,
+  }
   try {
     const post = await Post.create(data)
     return res.status(201).json(post)
@@ -41,10 +45,17 @@ const createPost = async (req, res) => {
 // PUT /posts/:id
 
 const updatePost = async (req, res) => {
-  const data = req.body.data
+  const data = {
+    title: req.body.title,
+    content: req.body.content,
+  }
   try {
     const { id } = req.params
-    const [updated] = await Post.update(data, {
+    const user_admin_level = await User.findByPk(req.auth.userId).admin_level
+    if (user_admin_level < 1 && req.auth.userId !== post.author_id) {
+      return res.status(403).json({ error: "Forbidden" })
+    }
+    const updated = await Post.update(data, {
       where: { id: id },
     })
     if (updated) {
@@ -62,6 +73,10 @@ const updatePost = async (req, res) => {
 const deletePost = async (req, res) => {
   try {
     const { id } = req.params
+    const user_admin_level = await User.findByPk(req.auth.userId).admin_level
+    if (user_admin_level < 1 && req.auth.userId !== post.author_id) {
+      return res.status(403).json({ error: "Forbidden" })
+    }
     const deleted = await Post.destroy({
       where: { id: id },
     })

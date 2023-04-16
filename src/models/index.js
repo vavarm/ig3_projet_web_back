@@ -10,17 +10,14 @@ const Tag = require("./Tag")
 User.hasMany(Post, {
   foreignKey: "author",
 })
-Post.belongsTo(User)
 //LESSON written by USER
 User.hasMany(Lesson, {
   foreignKey: "author",
 })
-Lesson.belongsTo(User)
 //EVENTS organized by USER
 User.hasMany(Event, {
   foreignKey: "organizer",
 })
-Event.belongsTo(User)
 //EVENTS registerd by USER
 User.belongsToMany(Event, {
   through: "UserEvent",
@@ -59,7 +56,7 @@ Tag.belongsToMany(Event, {
 })
 
 /* ------------------------------- Sync tables ------------------------------ */
-sequelize.sync({ force: true }).then(() => {
+sequelize.sync({ alter: true }).then(() => {
   console.log("All tables synced")
 })
 

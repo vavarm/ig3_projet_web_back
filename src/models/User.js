@@ -24,7 +24,8 @@ const User = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
       validate: {
-        in: [0, 1, 2],
+        min: 0,
+        max: 2,
       },
     },
     suscribed: {
