@@ -4,19 +4,23 @@ const Event = require("./Event")
 const Post = require("./Post")
 const Lesson = require("./Lesson")
 const Tag = require("./Tag")
+const PostTag = require("./PostTag")
+const LessonTag = require("./LessonTag")
+const EventTag = require("./EventTag")
 
 /* --------------------------- Define associations -------------------------- */
+//TODO: replace author by id_author etc. also in controllers
 //POST written by USER
 User.hasMany(Post, {
-  foreignKey: "author",
+  foreignKey: "author_id",
 })
 //LESSON written by USER
 User.hasMany(Lesson, {
-  foreignKey: "author",
+  foreignKey: "author_id",
 })
 //EVENTS organized by USER
 User.hasMany(Event, {
-  foreignKey: "organizer",
+  foreignKey: "organizer_id",
 })
 //EVENTS registerd by USER
 User.belongsToMany(Event, {
@@ -66,4 +70,7 @@ module.exports = {
   Post,
   Lesson,
   Tag,
+  PostTag,
+  LessonTag,
+  EventTag,
 }
