@@ -4,6 +4,8 @@ const User = require("../models/index").User
 
 // signup
 const signup = async (req, res) => {
+  //TODO: check if mail_address and user are already used
+  //TODO: send public hash key to front
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
@@ -24,6 +26,7 @@ const signup = async (req, res) => {
 
 // login
 const login = async (req, res) => {
+  //TODO: send public hash key to front
   try {
     await User.findOne({ where: { mail_address: req.body.mail_address } })
       .then((user) => {
@@ -55,5 +58,7 @@ const login = async (req, res) => {
     res.status(500).json({ error })
   }
 }
+
+//TODO: function that sends public hash key to front
 
 module.exports = { signup, login }
