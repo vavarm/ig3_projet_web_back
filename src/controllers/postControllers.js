@@ -1,4 +1,5 @@
 const Post = require("../models/index").Post
+const User = require("../models/index").User
 
 // GET /posts
 
@@ -15,7 +16,7 @@ const getPosts = async (req, res) => {
 
 const getPost = async (req, res) => {
   try {
-    const { id } = req.params
+    const id = req.params.id
     const post = await Post.findByPk(id)
     if (post) {
       return res.status(200).json(post)
@@ -50,8 +51,11 @@ const updatePost = async (req, res) => {
     content: req.body.content,
   }
   try {
-    const { id } = req.params
-    const user_admin_level = await User.findByPk(req.auth.userId).admin_level
+    const id = req.params.id
+    const user = await User.findByPk(req.auth.userId)
+    const user_admin_level = user.admin_level
+    console.log(await User.findByPk(req.auth.userId))
+    const post = await Post.findByPk(id)
     if (user_admin_level < 1 && req.auth.userId !== post.author_id) {
       return res.status(403).json({ error: "Forbidden" })
     }
@@ -72,8 +76,10 @@ const updatePost = async (req, res) => {
 
 const deletePost = async (req, res) => {
   try {
-    const { id } = req.params
-    const user_admin_level = await User.findByPk(req.auth.userId).admin_level
+    const id = req.params.id
+    const user = await User.findByPk(req.auth.userId)
+    const user_admin_level = user.admin_level
+    const post = await Post.findByPk(id)
     if (user_admin_level < 1 && req.auth.userId !== post.author_id) {
       return res.status(403).json({ error: "Forbidden" })
     }

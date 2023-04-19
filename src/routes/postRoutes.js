@@ -11,11 +11,11 @@ const {
   deletePost,
 } = require("../controllers/postControllers")
 
-router.get("/", auth, async (req, res) => {
+router.get("/", async (req, res) => {
   await getPosts(req, res)
 })
 
-router.get("/:id", auth, async (req, res) => {
+router.get("/:id", async (req, res) => {
   await getPost(req, res)
 })
 
