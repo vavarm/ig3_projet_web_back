@@ -41,8 +41,6 @@ const deleteTag = async (req, res) => {
       return res.status(403).json({ error: "Forbidden" })
     }
     if (tag) {
-      //delete tag
-      await tag.destroy()
       //delete tag from PostTag, EventTag, LessonTag
       const postTags = await PostTag.findAll({
         where: {
@@ -68,6 +66,8 @@ const deleteTag = async (req, res) => {
       eventTags.forEach(async (eventTag) => {
         await eventTag.destroy()
       })
+      //delete tag
+      await tag.destroy()
       return res.status(204).json({ message: "Tag deleted" })
     }
     return res.status(404).json({ error: "Tag not found" })

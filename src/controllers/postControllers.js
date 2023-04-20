@@ -37,6 +37,7 @@ const createPost = async (req, res) => {
   }
   try {
     const post = await Post.create(data)
+    //TODO: for each tags: if a tag doesn't exist, create it and create post_tag
     return res.status(201).json(post)
   } catch (err) {
     return res.status(500).json({ error: err.message })
@@ -59,6 +60,7 @@ const updatePost = async (req, res) => {
     if (user_admin_level < 1 && req.auth.userId !== post.author_id) {
       return res.status(403).json({ error: "Forbidden" })
     }
+    //TODO: for each tags: if a tag doesn't exist, create it and update post_tag (by creating or deleting)
     const updated = await Post.update(data, {
       where: { id: id },
     })
@@ -86,6 +88,7 @@ const deletePost = async (req, res) => {
     const deleted = await Post.destroy({
       where: { id: id },
     })
+    //TODO: delete all post_tags
     if (deleted) {
       return res.status(200).json({ message: "Post deleted" })
     }
