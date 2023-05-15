@@ -79,6 +79,24 @@ const login = async (req, res) => {
   }
 }
 
+// GET /users
+const getUsers = async (req, res) => {
+  try {
+    let user = await User.findByPk(req.auth.userId)
+    let user_admin_level = user.admin_level
+    if (user_admin_level < 1) {
+      return res.status(403).json({ message: "Forbidden" })
+    }
+    // get only mail_address, username and admin_level
+    const users = await User.findAll({
+      attributes: ["mail_address", "username", "admin_level"],
+    })
+    return res.status(200).json(users)
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+}
+
 //TODO: function that sends public hash key to front
 
-module.exports = { signup, login }
+module.exports = { signup, login, getUsers }
