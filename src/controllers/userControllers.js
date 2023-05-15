@@ -4,24 +4,26 @@ const User = require("../models/index").User
 
 // signup
 const signup = async (req, res) => {
-  //TODO: check if mail_address and user are already used
   //TODO: send public hash key to front
   // check if mail_address is already used
-  await User.findOne({ where: { mail_address: req.body.mail_address } })
-    .then((user) => {
-      if (user) {
-        return res.status(401).json({ message: "Adresse mail déjà utilisée !" })
-      }
-    })
-    .catch((error) => {return res.status(500).json({ message: error })})
+  try {
+  let user = await User.findOne({ where: { mail_address: req.body.mail_address } })
+    if (user) {
+      return res.status(401).json({ message: "Mail address already used" })
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error })
+  }
   // check if username is already used
-  await User.findOne({ where: { username: req.body.username } })
-    .then((user) => {
-      if (user) {
-        return res.status(401).json({ message: "Nom d'utilisateur déjà utilisé !" })
-      }
-    })
-    .catch((error) => {return res.status(500).json({ message: error })})
+  try {
+  let user = await User.findOne({ where: { username: req.body.username } })
+    if (user) {
+      return res.status(401).json({ message: "Username already used" })
+    }
+  } catch (error) {
+    return res.status(500).json({ message: error })
+  }
+  console.log("User " + req.body.mail_address + " signed up")
   // hash password
   bcrypt
     .hash(req.body.password, 10)
@@ -35,7 +37,7 @@ const signup = async (req, res) => {
       })
       user
         .save()
-        .then(() => {return res.status(201).json({ message: "Utilisateur créé !" })})
+        .then(() => {return res.status(201).json({ message: "User created" })})
         .catch((error) => {return res.status(400).json({ message: error })})
     })
     .catch((error) => {return res.status(500).json({ message: error })})
@@ -48,13 +50,13 @@ const login = async (req, res) => {
     await User.findOne({ where: { mail_address: req.body.mail_address } })
       .then((user) => {
         if (!user) {
-          return res.status(401).json({ message: "Utilisateur non trouvé !" })
+          return res.status(401).json({ message: "User not found" })
         }
         bcrypt
           .compare(req.body.password, user.password)
           .then((valid) => {
             if (!valid) {
-              return res.status(401).json({ message: "Mot de passe incorrect !" })
+              return res.status(401).json({ message: "Incorrect password" })
             }
             console.log("User " + user.mail_address + " logged in")
             res.status(200).json({

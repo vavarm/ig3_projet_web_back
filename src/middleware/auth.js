@@ -11,6 +11,6 @@ module.exports = (req, res, next) => {
     console.log("auth.js: " + req.auth.userId + " sent a request")
     next()
   } catch (error) {
-    res.status(401).json({ message: error })
+    return res.status(401).json({ message: error })
   }
 }
