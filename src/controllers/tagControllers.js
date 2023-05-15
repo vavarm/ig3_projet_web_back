@@ -11,7 +11,7 @@ const getTags = async (req, res) => {
     const tags = await Tag.findAll()
     return res.status(200).json(tags)
   } catch (err) {
-    return res.status(500).json({ error: err.message })
+    return res.status(500).json({ message: err.message })
   }
 }
 
@@ -25,7 +25,7 @@ const createTag = async (req, res) => {
     const tag = await Tag.create(data)
     return res.status(201).json(tag)
   } catch (err) {
-    return res.status(500).json({ error: err.message })
+    return res.status(500).json({ message: err.message })
   }
 }
 
@@ -38,7 +38,7 @@ const deleteTag = async (req, res) => {
     const user = await User.findByPk(req.auth.userId)
     const user_admin_level = user.admin_level
     if (user_admin_level < 1) {
-      return res.status(403).json({ error: "Forbidden" })
+      return res.status(403).json({ message: "Forbidden" })
     }
     if (tag) {
       //delete tag from PostTag, EventTag, LessonTag
@@ -70,9 +70,9 @@ const deleteTag = async (req, res) => {
       await tag.destroy()
       return res.status(204).json({ message: "Tag deleted" })
     }
-    return res.status(404).json({ error: "Tag not found" })
+    return res.status(404).json({ message: "Tag not found" })
   } catch (err) {
-    return res.status(500).json({ error: err.message })
+    return res.status(500).json({ message: err.message })
   }
 }
 

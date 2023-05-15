@@ -20,7 +20,7 @@ const getPosts = async (req, res) => {
     })
     return res.status(200).json(posts)
   } catch (err) {
-    return res.status(500).json({ error: err.message })
+    return res.status(500).json({ message: err.message })
   }
 }
 
@@ -43,9 +43,9 @@ const getPost = async (req, res) => {
     if (post) {
       return res.status(200).json(post)
     }
-    return res.status(404).json({ error: "Post not found" })
+    return res.status(404).json({ message: "Post not found" })
   } catch (err) {
-    return res.status(500).json({ error: err.message })
+    return res.status(500).json({ message: err.message })
   }
 }
 
@@ -83,7 +83,7 @@ const createPost = async (req, res) => {
     })
     return res.status(201).json(postWithTags)
   } catch (err) {
-    return res.status(500).json({ error: err.message })
+    return res.status(500).json({ message: err.message })
   }
 }
 
@@ -101,7 +101,7 @@ const updatePost = async (req, res) => {
     const user_admin_level = user.admin_level
     const post = await Post.findByPk(id)
     if (user_admin_level < 1 && req.auth.userId !== post.author_id) {
-      return res.status(403).json({ error: "Forbidden" })
+      return res.status(403).json({ message: "Forbidden" })
     }
     // delete all post_tags of the post
     const postTags = await PostTag.findAll({
@@ -145,9 +145,9 @@ const updatePost = async (req, res) => {
       })
       return res.status(200).json(postWithTags)
     }
-    return res.status(404).json({ error: "Post not found" })
+    return res.status(404).json({ message: "Post not found" })
   } catch (err) {
-    return res.status(500).json({ error: err.message })
+    return res.status(500).json({ message: err.message })
   }
 }
 
@@ -160,7 +160,7 @@ const deletePost = async (req, res) => {
     const user_admin_level = user.admin_level
     const post = await Post.findByPk(id)
     if (user_admin_level < 1 && req.auth.userId !== post.author_id) {
-      return res.status(403).json({ error: "Forbidden" })
+      return res.status(403).json({ message: "Forbidden" })
     }
     const deleted = await Post.destroy({
       where: { id: id },
@@ -177,9 +177,9 @@ const deletePost = async (req, res) => {
     if (deleted) {
       return res.status(200).json({ message: "Post deleted" })
     }
-    return res.status(404).json({ error: "Post not found" })
+    return res.status(404).json({ message: "Post not found" })
   } catch (err) {
-    return res.status(500).json({ error: err.message })
+    return res.status(500).json({ message: err.message })
   }
 }
 
