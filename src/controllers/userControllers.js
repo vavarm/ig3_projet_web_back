@@ -6,6 +6,23 @@ const User = require("../models/index").User
 const signup = async (req, res) => {
   //TODO: check if mail_address and user are already used
   //TODO: send public hash key to front
+  // check if mail_address is already used
+  await User.findOne({ where: { mail_address: req.body.mail_address } })
+    .then((user) => {
+      if (user) {
+        return res.status(401).json({ message: "Adresse mail déjà utilisée !" })
+      }
+    })
+    .catch((error) => {return res.status(500).json({ message: error })})
+  // check if username is already used
+  await User.findOne({ where: { username: req.body.username } })
+    .then((user) => {
+      if (user) {
+        return res.status(401).json({ message: "Nom d'utilisateur déjà utilisé !" })
+      }
+    })
+    .catch((error) => {return res.status(500).json({ message: error })})
+  // hash password
   bcrypt
     .hash(req.body.password, 10)
     .then((hash) => {
@@ -18,10 +35,10 @@ const signup = async (req, res) => {
       })
       user
         .save()
-        .then(() => res.status(201).json({ message: "Utilisateur créé !" }))
-        .catch((error) => res.status(400).json({ message: error }))
+        .then(() => {return res.status(201).json({ message: "Utilisateur créé !" })})
+        .catch((error) => {return res.status(400).json({ message: error })})
     })
-    .catch((error) => res.status(500).json({ message: error }))
+    .catch((error) => {return res.status(500).json({ message: error })})
 }
 
 // login
@@ -51,11 +68,11 @@ const login = async (req, res) => {
               ),
             })
           })
-          .catch((error) => res.status(500).json({ message: error }))
+          .catch((error) => {return res.status(500).json({ message: error })})
       })
-      .catch((error) => res.status(500).json({ message: error }))
+      .catch((error) => {return res.status(500).json({ message: error })})
   } catch (error) {
-    res.status(500).json({ message: error })
+    return res.status(500).json({ message: error })
   }
 }
 
