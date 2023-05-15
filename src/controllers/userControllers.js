@@ -68,6 +68,7 @@ const login = async (req, res) => {
                   expiresIn: "24h",
                 }
               ),
+              user_admin_level: user.admin_level,
             })
           })
           .catch((error) => {return res.status(500).json({ message: error })})
