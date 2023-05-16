@@ -97,6 +97,63 @@ const getUsers = async (req, res) => {
   }
 }
 
+const deleteUser = async (req, res) => {
+  try {
+    const sender = await User.findByPk(req.auth.userId)
+    const sender_admin_level = sender.admin_level
+    const mail_address = req.params.mail_address
+    const user = await User.findByPk(mail_address)
+    if (sender_admin_level < 1 && req.auth.userId !== user.mail_address) {
+      return res.status(403).json({ message: "Forbidden" })
+    }
+    if (user) {
+      await user.destroy()
+      return res.status(200).json({ message: "User deleted" })
+    }
+    return res.status(404).json({ message: "User not found" })
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+}
+
+const setAdmin = async (req, res) => {
+  try {
+    const sender = await User.findByPk(req.auth.userId)
+    const sender_admin_level = sender.admin_level
+    const mail_address = req.body.mail_address
+    const user = await User.findByPk(mail_address)
+    if (sender_admin_level < 1) {
+      return res.status(403).json({ message: "Forbidden" })
+    }
+    if (user) {
+      await user.update({ admin_level: 1 })
+      return res.status(200).json({ message: "User is now admin" })
+    }
+    return res.status(404).json({ message: "User not found" })
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+}
+
+const unsetAdmin = async (req, res) => {
+  try {
+    const sender = await User.findByPk(req.auth.userId)
+    const sender_admin_level = sender.admin_level
+    const mail_address = req.body.mail_address
+    const user = await User.findByPk(mail_address)
+    if (sender_admin_level < 1) {
+      return res.status(403).json({ message: "Forbidden" })
+    }
+    if (user) {
+      await user.update({ admin_level: 0 })
+      return res.status(200).json({ message: "User is no longer admin" })
+    }
+    return res.status(404).json({ message: "User not found" })
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+}
+
 //TODO: function that sends public hash key to front
 
-module.exports = { signup, login, getUsers }
+module.exports = { signup, login, getUsers, deleteUser, setAdmin, unsetAdmin }
