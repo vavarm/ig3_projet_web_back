@@ -125,6 +125,9 @@ const setAdmin = async (req, res) => {
     if (sender_admin_level < 1) {
       return res.status(403).json({ message: "Forbidden" })
     }
+    if(user.admin_level === 2){
+      return res.status(403).json({ message: "Forbidden" })
+    }
     if (user) {
       await user.update({ admin_level: 1 })
       return res.status(200).json({ message: "User is now admin" })
@@ -142,6 +145,9 @@ const unsetAdmin = async (req, res) => {
     const mail_address = req.body.mail_address
     const user = await User.findByPk(mail_address)
     if (sender_admin_level < 1) {
+      return res.status(403).json({ message: "Forbidden" })
+    }
+    if (user.admin_level === 2) {
       return res.status(403).json({ message: "Forbidden" })
     }
     if (user) {
