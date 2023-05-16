@@ -69,6 +69,7 @@ const login = async (req, res) => {
                 }
               ),
               user_admin_level: user.admin_level,
+              user_mail_address: user.mail_address,
             })
           })
           .catch((error) => {return res.status(500).json({ message: error })})

@@ -22,12 +22,10 @@ router.delete("/users/:mail_address", auth, async (req, res) => {
 })
 
 router.put("/users/set-admin", auth, async (req, res) => {
-  console.log("set-admin")
   await setAdmin(req, res)
 })
 
 router.put("/users/unset-admin", auth, async (req, res) => {
-  console.log("unset-admin")
   await unsetAdmin(req, res)
 })
 
