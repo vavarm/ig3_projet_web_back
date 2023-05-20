@@ -1,5 +1,13 @@
 // import the required dependencies
 const http = require("http")
+if (!process.env.NODE_ENV || process.env.NODE_ENV !== "production") {
+  const dotenv = require("dotenv")
+  const result = dotenv.config()
+  console.log(".env file loaded")
+  if (result.error) {
+    throw result.error
+  }
+}
 const app = require("./app")
 const sequelize = require("./config/database")
 

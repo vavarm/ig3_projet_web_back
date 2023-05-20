@@ -8,6 +8,9 @@ const Tag = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       primaryKey: true,
+      validate: {
+        len: [1, 10],
+      }
     },
   },
   {

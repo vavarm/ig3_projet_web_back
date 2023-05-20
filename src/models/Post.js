@@ -13,6 +13,9 @@ const Post = sequelize.define(
     title: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: [1, 255],
+      }
     },
     content: {
       type: DataTypes.TEXT,

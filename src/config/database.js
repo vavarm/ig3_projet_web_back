@@ -1,13 +1,4 @@
 const { Sequelize } = require("sequelize")
-const dotenv = require("dotenv")
-
-if (!process.env.NODE_ENV || process.env.NODE_ENV !== "production") {
-  console.log("Loading .env file")
-  const result = dotenv.config({ path: "src/.env" })
-  if (result.error) {
-    throw result.error
-  }
-}
 
 const sequelize = new Sequelize(
   process.env.DB_NAME,

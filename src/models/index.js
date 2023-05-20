@@ -9,7 +9,6 @@ const LessonTag = require("./LessonTag")
 const EventTag = require("./EventTag")
 
 /* --------------------------- Define associations -------------------------- */
-//TODO: replace author by id_author etc. also in controllers
 //POST written by USER
 User.hasMany(Post, {
   foreignKey: "author_id",
