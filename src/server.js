@@ -24,7 +24,7 @@ sequelize
 const server = http.createServer(app)
 
 // set the port on which the server will listen for incoming requests
-const port = process.env.PORT || 3000
+const port = process.env.PORT
 
 // start the server and listen for incoming requests on the specified port
 server.listen(port, () => {
