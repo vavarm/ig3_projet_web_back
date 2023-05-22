@@ -45,7 +45,6 @@ const signup = async (req, res) => {
 
 // login
 const login = async (req, res) => {
-  //TODO: send public hash key to front
   try {
     await User.findOne({ where: { mail_address: req.body.mail_address } })
       .then((user) => {

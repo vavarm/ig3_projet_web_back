@@ -2,15 +2,21 @@
 const express = require("express")
 const helmet = require("helmet")
 const cors = require("cors")
+const cookieParser = require("cookie-parser")
 
 // Create an Express application
 const app = express()
 
 // Express or module-specific middlewares
-app.use(cors())
+const corsOptions = {
+  origin: ["http://localhost:5000", "https://learn-n-teach.cluster-ig3.igpolytech.fr/"],
+  credentials: true,
+}
+app.use(cors(corsOptions))
 app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cookieParser())
 app.use(express.static(__dirname + '/public'))
 app.use("/posts", require("./routes/postRoutes"))
 app.use("/tags", require("./routes/tagRoutes"))
