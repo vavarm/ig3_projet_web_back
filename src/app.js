@@ -9,7 +9,7 @@ const app = express()
 
 // Express or module-specific middlewares
 const corsOptions = {
-  origin: ["http://localhost:5000", "https://learn-n-teach.cluster-ig3.igpolytech.fr/"],
+  origin: ["http://localhost:5000", "https://learn-n-teach.cluster-ig3.igpolytech.fr"],
   credentials: true,
 }
 app.use(cors(corsOptions))
@@ -17,6 +17,11 @@ app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'https://learn-n-teach.cluster-ig3.igpolytech.fr')
+  res.setHeader('Access-Control-Allow-Credentials', 'true')
+  next();
+})
 app.use(express.static(__dirname + '/public'))
 app.use("/posts", require("./routes/postRoutes"))
 app.use("/tags", require("./routes/tagRoutes"))
