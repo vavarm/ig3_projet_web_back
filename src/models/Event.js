@@ -45,7 +45,7 @@ const Event = sequelize.define(
     max_participants: {
       type: DataTypes.INTEGER,
       allowNull: false,
-    },
+    }
   },
   {
     tableName: "Event",

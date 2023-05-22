@@ -7,6 +7,7 @@ const Tag = require("./Tag")
 const PostTag = require("./PostTag")
 const LessonTag = require("./LessonTag")
 const EventTag = require("./EventTag")
+const UserEvent = require("./UserEvent")
 
 /* --------------------------- Define associations -------------------------- */
 //POST written by USER
@@ -72,4 +73,5 @@ module.exports = {
   PostTag,
   LessonTag,
   EventTag,
+  UserEvent,
 }

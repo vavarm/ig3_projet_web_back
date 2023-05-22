@@ -4,7 +4,6 @@ const User = require("../models/index").User
 
 // signup
 const signup = async (req, res) => {
-  //TODO: send public hash key to front
   // check if mail_address is already used
   try {
   let user = await User.findOne({ where: { mail_address: req.body.mail_address } })
@@ -159,7 +158,5 @@ const unsetAdmin = async (req, res) => {
     return res.status(500).json({ message: err.message })
   }
 }
-
-//TODO: function that sends public hash key to front
 
 module.exports = { signup, login, getUsers, deleteUser, setAdmin, unsetAdmin }

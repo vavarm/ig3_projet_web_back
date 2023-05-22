@@ -24,6 +24,7 @@ app.use((req, res, next) => {
 })
 app.use(express.static(__dirname + '/public'))
 app.use("/posts", require("./routes/postRoutes"))
+app.use("/events", require("./routes/eventRoutes"))
 app.use("/tags", require("./routes/tagRoutes"))
 app.use("/auth", require("./routes/userRoutes"))
 
