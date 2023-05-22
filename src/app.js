@@ -9,7 +9,7 @@ const app = express()
 
 // Express or module-specific middlewares
 const corsOptions = {
-  origin: ["http://localhost:5000", "https://learn-n-teach.cluster-ig3.igpolytech.fr"],
+  origin: process.env.CLIENT_URL,
   credentials: true,
 }
 app.use(cors(corsOptions))
@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', 'https://learn-n-teach.cluster-ig3.igpolytech.fr')
+  res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL)
   res.setHeader('Access-Control-Allow-Credentials', 'true')
   next();
 })
