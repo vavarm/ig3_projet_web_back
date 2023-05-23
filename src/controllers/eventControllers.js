@@ -188,6 +188,24 @@ const unregisterEvent = async (req, res) => {
     }
 }
 
+const getNumberOfRegisteredUsers = async (req, res) => {
+    try {
+        const id = req.params.id
+        const event = await Event.findByPk(id)
+        if (!event) {
+        return res.status(404).json({ message: "Event not found" })
+        }
+        const registeredUsers = await UserEvent.count({
+        where: {
+            event_id: id,
+        },
+        })
+        return res.status(200).json({ message: registeredUsers })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+}
+
 // GET /events/registered
 
 const getRegisteredEvents = async (req, res) => {
@@ -225,6 +243,7 @@ module.exports = {
     deleteEvent,
     registerEvent,
     unregisterEvent,
+    getNumberOfRegisteredUsers,
     getRegisteredEvents,
     getOwnedEvents,
 }

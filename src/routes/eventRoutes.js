@@ -10,6 +10,7 @@ const {
     deleteEvent,
     registerEvent,
     unregisterEvent,
+    getNumberOfRegisteredUsers,
     getRegisteredEvents,
     getOwnedEvents,
 } = require('../controllers/eventControllers')
@@ -40,6 +41,10 @@ router.post('/register/:id', auth, async (req, res) => {
 
 router.post('/unregister/:id', auth, async (req, res) => {
     await unregisterEvent(req, res)
+})
+
+router.get('/nbregistered/:id', auth, async (req, res) => {
+    await getNumberOfRegisteredUsers(req, res)
 })
 
 router.get('/users/registered', auth, async (req, res) => {
