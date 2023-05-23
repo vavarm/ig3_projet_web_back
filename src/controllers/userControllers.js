@@ -78,6 +78,24 @@ const login = async (req, res) => {
   }
 }
 
+// GET /users/:mail_address
+const getUser = async (req, res) => {
+  try {
+    const mail_address = req.params.mail_address
+    const sender = await User.findByPk(req.auth.userId)
+    if((req.auth.userId !== mail_address) && sender.admin_level < 1){
+      return res.status(403).json({ message: "Forbidden" })
+    }
+    const user = await User.findByPk(mail_address)
+    if (user) {
+      return res.status(200).json(user)
+    }
+    return res.status(404).json({ message: "User not found" })
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+}
+
 // GET /users
 const getUsers = async (req, res) => {
   try {
@@ -159,4 +177,33 @@ const unsetAdmin = async (req, res) => {
   }
 }
 
-module.exports = { signup, login, getUsers, deleteUser, setAdmin, unsetAdmin }
+const suscribe = async (req, res) => {
+  try {
+    const mail_address = req.auth.userId
+    const user = await User.findByPk(mail_address)
+    if (user) {
+      await user.update({ suscribed: true })
+      return res.status(200).json({ message: "User is now suscribed" })
+    }
+    return res.status(404).json({ message: "User not found" })
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+}
+
+const unsuscribe = async (req, res) => {
+  try {
+    const mail_address = req.auth.userId
+    const user = await User.findByPk(mail_address)
+    if (user) {
+      await user.update({ suscribed: false })
+      return res.status(200).json({ message: "User is no longer suscribed" })
+    }
+    return res.status(404).json({ message: "User not found" })
+  } catch (err) {
+    return res.status(500).json({ message: err.message })
+  }
+}
+
+
+module.exports = { signup, login, getUser, getUsers, deleteUser, setAdmin, unsetAdmin, suscribe, unsuscribe }
