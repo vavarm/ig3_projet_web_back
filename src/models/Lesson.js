@@ -10,15 +10,11 @@ const Lesson = sequelize.define(
       primaryKey: true,
       autoIncrement: true,
     },
-    title: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     description: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    path: {
       type: DataTypes.STRING,
       allowNull: false,
     },
@@ -34,7 +30,7 @@ const Lesson = sequelize.define(
   {
     tableName: "Lesson",
     freezeTableName: true,
-    timestamps: false,
+    timestamps: true,
   }
 )
 

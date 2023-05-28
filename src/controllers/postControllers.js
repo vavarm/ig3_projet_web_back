@@ -100,11 +100,14 @@ const updatePost = async (req, res) => {
     const user = await User.findByPk(req.auth.userId)
     const user_admin_level = user.admin_level
     const post = await Post.findByPk(id)
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" })
+    }
     if (user_admin_level < 1 && req.auth.userId !== post.author_id) {
       return res.status(403).json({ message: "Forbidden" })
     }
     // delete all post_tags of the post
-    const postTags = await PostTag.findAll({
+    const postTags = await PostTag.destroy({
       where: {
         post_id: id,
       },
@@ -159,6 +162,9 @@ const deletePost = async (req, res) => {
     const user = await User.findByPk(req.auth.userId)
     const user_admin_level = user.admin_level
     const post = await Post.findByPk(id)
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" })
+    }
     if (user_admin_level < 1 && req.auth.userId !== post.author_id) {
       return res.status(403).json({ message: "Forbidden" })
     }

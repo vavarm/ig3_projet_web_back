@@ -22,9 +22,10 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Credentials', 'true')
   next();
 })
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/../public'))
 app.use("/posts", require("./routes/postRoutes"))
 app.use("/events", require("./routes/eventRoutes"))
+app.use("/lessons", require("./routes/lessonRoutes"))
 app.use("/tags", require("./routes/tagRoutes"))
 app.use("/auth", require("./routes/userRoutes"))
 
