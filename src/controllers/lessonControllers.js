@@ -133,8 +133,17 @@ const deleteLesson = async (req, res) => {
         const deleted = await Lesson.destroy({
             where: { id: id },
         })
+        const path = `./public/${id}.pdf`
+        console.log("path: ", path) // DEBUG
         // delete the file associated to the lesson (<lesson_id>.pdf)
-        fs.unlink(`public/${id}.pdf`)
+        fs.unlink(path, (err) => {
+            if (err) {
+                console.error(err)
+                return
+            } else {
+                console.log("File deleted successfully")
+            }
+        })
         if (deleted) {
             return res.status(204).json({ message: "Lesson deleted" })
         }
