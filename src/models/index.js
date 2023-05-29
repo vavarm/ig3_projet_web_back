@@ -60,7 +60,7 @@ Tag.belongsToMany(Event, {
 })
 
 /* ------------------------------- Sync tables ------------------------------ */
-sequelize.sync({ alter: true }).then(() => {
+sequelize.sync({ force: true }).then(() => {
   console.log("All tables synced")
 })
 
