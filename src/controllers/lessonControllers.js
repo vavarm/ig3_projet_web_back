@@ -59,7 +59,6 @@ const createLesson = async (req, res) => {
         author_id: req.auth.userId,
     }
     let tags = req.body.tags
-    console.log("body: ", req.body) // DEBUG
     try {
         const file = req.file
         if (!file) {
@@ -84,16 +83,15 @@ const createLesson = async (req, res) => {
                 })
             })
         }
-        const originalName = file.originalname
-        console.log("originalName: ", originalName)
+        // get the temporary file name
+        const tempFileName = file.filename
         // verify if the file is a pdf
-        if (!originalName.endsWith(".pdf")) {
+        if (!tempFileName.endsWith(".pdf")) {
             return res.status(400).json({ message: "Please upload a pdf file" })
         }
         const newName = `${lesson.id}.pdf`
-        console.log("newName: ", newName)
         // rename the file
-        fs.renameSync(`./public/${originalName}`, `./public/${newName}`)
+        fs.renameSync(`./public/${tempFileName}`, `./public/${newName}`)
         // send current lesson with tags associated in the table LessonTag
         const lessonWithTags = await Lesson.findByPk(lesson.id, {
             include: [
@@ -134,7 +132,6 @@ const deleteLesson = async (req, res) => {
             where: { id: id },
         })
         const path = `./public/${id}.pdf`
-        console.log("path: ", path) // DEBUG
         // delete the file associated to the lesson (<lesson_id>.pdf)
         fs.unlink(path, (err) => {
             if (err) {
