@@ -9,7 +9,7 @@ const app = express()
 
 // Express or module-specific middlewares
 const corsOptions = {
-  origin: process.env.CLIENT_URL,
+  origin: true,
   credentials: true,
 }
 app.use(cors(corsOptions))
