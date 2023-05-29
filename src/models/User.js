@@ -29,7 +29,7 @@ const User = sequelize.define(
         max: 2,
       },
     },
-    suscribed: {
+    subscribed: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
     },

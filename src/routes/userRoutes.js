@@ -3,7 +3,7 @@ const router = express.Router()
 
 const auth = require("../middleware/auth")
 
-const { signup, login, getUser, getUsers, deleteUser, setAdmin, unsetAdmin, suscribe, unsuscribe } = require("../controllers/userControllers")
+const { signup, login, getUser, getUsers, deleteUser, setAdmin, unsetAdmin, subscribe, unsubscribe } = require("../controllers/userControllers")
 
 router.post("/signup", async (req, res) => {
   await signup(req, res)
@@ -33,12 +33,12 @@ router.put("/users/unset-admin", auth, async (req, res) => {
   await unsetAdmin(req, res)
 })
 
-router.put("/users/suscribe", auth, async (req, res) => {
-  await suscribe(req, res)
+router.put("/users/subscribe", auth, async (req, res) => {
+  await subscribe(req, res)
 })
 
-router.put("/users/unsuscribe", auth, async (req, res) => {
-  await unsuscribe(req, res)
+router.put("/users/unsubscribe", auth, async (req, res) => {
+  await unsubscribe(req, res)
 })
 
 module.exports = router

@@ -32,7 +32,7 @@ const signup = async (req, res) => {
         username: req.body.username,
         password: hash,
         admin_level: 0,
-        suscribed: req.body.suscribed,
+        subscribed: req.body.subscribed,
       })
       user
         .save()
@@ -177,13 +177,13 @@ const unsetAdmin = async (req, res) => {
   }
 }
 
-const suscribe = async (req, res) => {
+const subscribe = async (req, res) => {
   try {
     const mail_address = req.auth.userId
     const user = await User.findByPk(mail_address)
     if (user) {
-      await user.update({ suscribed: true })
-      return res.status(200).json({ message: "User is now suscribed" })
+      await user.update({ subscribed: true })
+      return res.status(200).json({ message: "User is now subscribed" })
     }
     return res.status(404).json({ message: "User not found" })
   } catch (err) {
@@ -191,13 +191,13 @@ const suscribe = async (req, res) => {
   }
 }
 
-const unsuscribe = async (req, res) => {
+const unsubscribe = async (req, res) => {
   try {
     const mail_address = req.auth.userId
     const user = await User.findByPk(mail_address)
     if (user) {
-      await user.update({ suscribed: false })
-      return res.status(200).json({ message: "User is no longer suscribed" })
+      await user.update({ subscribed: false })
+      return res.status(200).json({ message: "User is no longer subscribed" })
     }
     return res.status(404).json({ message: "User not found" })
   } catch (err) {
@@ -206,4 +206,4 @@ const unsuscribe = async (req, res) => {
 }
 
 
-module.exports = { signup, login, getUser, getUsers, deleteUser, setAdmin, unsetAdmin, suscribe, unsuscribe }
+module.exports = { signup, login, getUser, getUsers, deleteUser, setAdmin, unsetAdmin, subscribe, unsubscribe }
