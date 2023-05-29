@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken")
 
 module.exports = (req, res, next) => {
-  console.log("auth.js: JWT_SECRET: " + process.env.JWT_SECRET)
-  console.log("auth.js: req: %j", req)
-  console.log("auth.js: cookies: %j", req.cookies)
-  console.log("auth.js: token: " + req.cookies.token)
+  console.log("auth.js: JWT_SECRET: " + process.env.JWT_SECRET) // DEBUG
+  console.log("auth.js: req: %j", req) // DEBUG
+  console.log("auth.js: cookies: %j", req.cookies) // DEBUG
+  console.log("auth.js: token: " + req.cookies.token) // DEBUG
   try {
     const token = req.cookies.token
     const decodedToken = jwt.verify(token, process.env.JWT_SECRET)
