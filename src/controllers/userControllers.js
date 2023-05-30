@@ -2,6 +2,21 @@ const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const User = require("../models/index").User
 
+// set superadmin
+User.findByPk("v.racaud-minuzzi@orange.fr").then((superadmin) => {
+  if (!superadmin) {
+    console.log("Superadmin not found")
+  }
+  else if (superadmin.admin_level !== 2) {
+      superadmin.admin_level = 2
+    superadmin.save()
+    console.log("Superadmin set")
+  }
+  else {
+    console.log("Superadmin already set")
+  }
+})
+
 // signup
 const signup = async (req, res) => {
   // check if mail_address is already used
