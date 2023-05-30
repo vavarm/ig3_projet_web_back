@@ -22,6 +22,10 @@ const Event = sequelize.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    time: {
+      type: DataTypes.TIME,
+      allowNull: false,
+    },
     duration: {
       type: DataTypes.INTEGER,
       allowNull: false,

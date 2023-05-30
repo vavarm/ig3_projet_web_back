@@ -57,6 +57,7 @@ const createEvent = async (req, res) => {
         name: req.body.name,
         description: req.body.description,
         date: req.body.date,
+        time: req.body.time,
         duration: req.body.duration,
         location: req.body.location,
         postal_code: req.body.postal_code,
