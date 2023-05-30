@@ -30,6 +30,7 @@ const {
     getLessons,
     getLesson,
     createLesson,
+    uploadLesson,
     deleteLesson,
 } = require('../controllers/lessonControllers')
 
@@ -41,8 +42,12 @@ router.get('/:id', async (req, res) => {
     await getLesson(req, res)
 })
 
-router.post('/', auth, upload.single('file'), async (req, res) => {
+router.post('/', auth, async (req, res) => {
     await createLesson(req, res)
+})
+
+router.post('/upload/:id', auth, upload.single('file'), async (req, res) => {
+    await uploadLesson(req, res)
 })
 
 router.delete('/:id', auth, async (req, res) => {

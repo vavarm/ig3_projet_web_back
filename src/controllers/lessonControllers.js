@@ -60,10 +60,6 @@ const createLesson = async (req, res) => {
     }
     let tags = req.body.tags
     try {
-        const file = req.file
-        if (!file) {
-            return res.status(400).json({ message: "Please upload a file" })
-        }
         // create lesson
         const lesson = await Lesson.create(data)
         if (!lesson) {
@@ -83,15 +79,6 @@ const createLesson = async (req, res) => {
                 })
             })
         }
-        // get the temporary file name
-        const tempFileName = file.filename
-        // verify if the file is a pdf
-        if (!tempFileName.endsWith(".pdf")) {
-            return res.status(400).json({ message: "Please upload a pdf file" })
-        }
-        const newName = `${lesson.id}.pdf`
-        // rename the file
-        fs.renameSync(`./public/${tempFileName}`, `./public/${newName}`)
         // send current lesson with tags associated in the table LessonTag
         const lessonWithTags = await Lesson.findByPk(lesson.id, {
             include: [
@@ -108,6 +95,31 @@ const createLesson = async (req, res) => {
         return res.status(500).json({ message: err.message })
     }
 }
+
+// POST /lessons/upload/:id
+
+const uploadLesson = async (req, res) => {
+    try {
+        const id = req.params.id
+        const file = req.file
+        if (!file) {
+            return res.status(400).json({ message: "Please upload a file" })
+        }
+        // get the temporary file name
+        const tempFileName = file.filename
+        // verify if the file is a pdf
+        if (!tempFileName.endsWith(".pdf")) {
+            return res.status(400).json({ message: "Please upload a pdf file" })
+        }
+        const newName = `${id}.pdf`
+        // rename the file
+        fs.renameSync(`./public/${tempFileName}`, `./public/${newName}`)
+        return res.status(200).json({ message: "File uploaded" })
+    } catch (err) {
+        return res.status(500).json({ message: err.message })
+    }
+}
+
 
 // DELETE /lessons/:id
 
@@ -154,5 +166,6 @@ module.exports = {
     getLessons,
     getLesson,
     createLesson,
+    uploadLesson,
     deleteLesson,
 }
