@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 const User = require("../models/index").User
 
 // set superadmin
-User.findByPk("v.racaud-minuzzi@orange.fr").then((superadmin) => {
+User.findByPk(process.env.SUPERADMIN_EMAIL).then((superadmin) => {
   if (!superadmin) {
     console.log("Superadmin not found")
   }
