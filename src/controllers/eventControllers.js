@@ -4,6 +4,45 @@ const Tag = require("../models/index").Tag
 const EventTag = require("../models/index").EventTag
 const UserEvent = require("../models/index").UserEvent
 
+const nodemailer = require("nodemailer")
+
+const sendMailOfRegistration = async (userId, event) => {
+    const transporter = nodemailer.createTransport({
+        host: "smtp.ethereal.email",
+        port: 587,
+        auth: {
+        user: process.env.EMAIL,
+        pass: process.env.EMAIL_PWD,
+        },
+    })
+    const mailOptions = {
+        from: process.env.EMAIL,
+        to: userId,
+        subject: "Registration to an event",
+        html: `<p>You have successfully registered to ${event.name}.</p>
+        <p>Event details:</p>
+        <ul>
+            <li>Name: ${event.name}</li>
+            <li>Description: ${event.description}</li>
+            <li>Date: ${event.date}</li>
+            <li>Time: ${event.time}</li>
+            <li>Duration: ${event.duration}</li>
+            <li>Location: ${event.location}</li>
+            <li>Postal code: ${event.postal_code}</li>
+            <li>City: ${event.city}</li>
+            <li>Price: ${event.price}</li>
+        </ul>
+        <p>Thank you for your registration.</p>`,
+    }
+    transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+        console.log(err)
+        } else {
+        console.log("Email sent: " + info.response)
+        }
+    })
+}
+
 // GET /events
 
 const getEvents = async (req, res) => {
@@ -153,6 +192,11 @@ const registerEvent = async (req, res) => {
         event_id: id,
         })
         if (registered) {
+        try{
+            sendMailOfRegistration(req.auth.userId, event)
+        }   catch (err) {
+            console.log(err)
+        }
         return res.status(200).json({ message: "User registered" })
         }
         return res.status(500).json({ message: "Error" })
