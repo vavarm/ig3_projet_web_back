@@ -13,15 +13,20 @@ const corsOptions = {
   credentials: true,
 }
 app.use(cors(corsOptions))
-app.use(helmet())
+app.use(helmet(
+  {
+    XFrameOptions: false
+  }
+))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cookieParser())
 app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL)
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  res.setHeader('Access-Control-Allow-Credentials', 'true')
+  res.setHeader('X-Frame-Options', process.env.CLIENT_URL)
 
   if (req.method === 'OPTIONS') {
     // Respond to preflight requests
